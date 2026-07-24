@@ -79,10 +79,17 @@ def ensure_gh() -> str:
         raise ReleaseError(
             "GitHub CLI (`gh`) is missing and cannot be installed automatically."
         )
-    prefix = [] if os.geteuid() == 0 else [sudo]
-    log("installing GitHub CLI (sudo may ask for a password)")
-    run([*prefix, apt_get, "update"])
-    run([*prefix, apt_get, "install", "-y", "gh"])
+    prefix = [] if os.geteuid() == 0 else [sudo, "--non-interactive"]
+    log("installing GitHub CLI")
+    try:
+        run([*prefix, apt_get, "update"])
+        run([*prefix, apt_get, "install", "-y", "gh"])
+    except subprocess.CalledProcessError as exc:
+        raise ReleaseError(
+            "GitHub CLI is missing and sudo needs an interactive password.\n"
+            "Run `wsl sudo apt-get update && wsl sudo apt-get install -y gh` "
+            "once, then rerun the release."
+        ) from exc
     gh = shutil.which("gh")
     if not gh:
         raise ReleaseError("GitHub CLI installation completed but `gh` is unavailable.")
