@@ -1,6 +1,3 @@
 .build/
 dist/
-scripts/__pycache__/build_book.cpython-310.pyc
-scripts/__pycache__/build_book.cpython-312.pyc
-scripts/__pycache__/build_book.cpython-314.pyc
-scripts/__pycache__/release.cpython-314.pyc
+scripts/__pycache__/
