@@ -3,6 +3,12 @@
 ## —— 一个初中生也能看懂的计数思维课
 
 ![cover](./imgs/cover.png)
+
+## 电子书构建
+
+运行 `make build` 可同时生成 PDF、EPUB 和 MOBI，详见
+[BUILD.md](BUILD.md)。
+
 ---
 
 # 一、写作背景（Why）

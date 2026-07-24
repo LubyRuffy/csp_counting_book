@@ -1,0 +1,38 @@
+[book]
+title = "算法从数数开始"
+subtitle = "一个初中生也能看懂的计数思维课"
+author = "LubyRuffy"
+language = "zh-CN"
+description = "一本以方块王国冒险故事讲清计数原理、组合思维与算法直觉的趣味数学读物。"
+rights = "Copyright © LubyRuffy. All rights reserved."
+slug = "algorithm-starts-with-counting"
+cover = "imgs/cover.png"
+chapters = [
+  "01.md",
+  "02.md",
+  "03.md",
+  "04.md",
+  "05.md",
+  "06.md",
+  "07.md",
+  "08.md",
+  "09.md",
+  "10.md",
+  "11.md",
+  "12.md",
+  "13.md",
+]
+
+[pdf]
+paper = "a5"
+font_size = "11pt"
+main_font = "auto"
+sans_font = "auto"
+mono_font = "auto"
+code_font = "auto"
+
+[images]
+optimize = true
+max_width = 1600
+jpeg_quality = 84
+cover_quality = 88
