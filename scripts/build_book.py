@@ -158,6 +158,37 @@ def command_name(env_name: str, default: str) -> str:
     return os.environ.get(env_name, default)
 
 
+def detect_development_version() -> str:
+    git = shutil.which("git")
+    if git:
+        result = subprocess.run(
+            [
+                git,
+                "describe",
+                "--tags",
+                "--match",
+                "v[0-9]*",
+                "--always",
+                "--dirty",
+            ],
+            cwd=ROOT,
+            check=False,
+            text=True,
+            encoding="utf-8",
+            errors="replace",
+            stdout=subprocess.PIPE,
+            stderr=subprocess.DEVNULL,
+        )
+        description = result.stdout.strip()
+        if description.startswith("v"):
+            return description
+        if description:
+            dirty = ".dirty" if description.endswith("-dirty") else ""
+            commit = description.removesuffix("-dirty")
+            return f"v0.1.0-dev+g{commit}{dirty}"
+    return "v0.1.0-dev"
+
+
 def required_tools(formats: set[str]) -> dict[str, str]:
     tools = {"pandoc": command_name("PANDOC", "pandoc")}
     if "pdf" in formats:
@@ -1244,7 +1275,7 @@ def parse_args() -> argparse.Namespace:
     )
     build_parser.add_argument(
         "--book-version",
-        help="version embedded in PDF/EPUB/MOBI metadata and title pages",
+        help="version embedded in title pages (default: derived from Git)",
     )
     build_parser.add_argument(
         "--book-updated",
@@ -1264,13 +1295,12 @@ def main() -> int:
         log(f"starting build (engine={args.engine}, formats={requested_formats})")
     config = load_config()
     if args.command == "build":
-        if args.book_version:
-            config["_build_version"] = args.book_version
-            config["_build_updated"] = (
-                args.book_updated or datetime.now().astimezone().date().isoformat()
-            )
-            log(f"embedding book version: {args.book_version}")
-            log(f"embedding last-updated date: {config['_build_updated']}")
+        config["_build_version"] = args.book_version or detect_development_version()
+        config["_build_updated"] = (
+            args.book_updated or datetime.now().astimezone().date().isoformat()
+        )
+        log(f"embedding book version: {config['_build_version']}")
+        log(f"embedding last-updated date: {config['_build_updated']}")
         requested = set(args.formats or ("pdf", "epub", "mobi"))
         build(
             config,

@@ -143,7 +143,9 @@ make release VERSION=v0.2.0
 
 Release 构建会在封面图片后的文字封面页显示“版本号”和“最后更新”日期；
 PDF、EPUB、MOBI 保持一致。同时 EPUB 的 metadata identifier 也包含对应版本号。
-普通的 `make build` 不会写入发布版本。
+普通的 `make build` 和 Docker 构建也会显示版本号：存在 Git 标签时使用
+`git describe` 生成的版本；尚无标签时使用类似 `v0.1.0-dev+g88624d7`
+的开发版本。Release 构建则始终使用最终发布版本号。
 
 发布使用 GitHub CLI。WSL 中首次运行会自动尝试安装 `gh`，之后需要
 用户执行一次 `gh auth login` 完成 GitHub 身份认证。
