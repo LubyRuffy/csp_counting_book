@@ -475,9 +475,9 @@ def write_pdf_front_matter(config: dict) -> Path:
 {{\Huge\bfseries {title}\par}}
 \vspace{{1.2em}}
 {{\Large {subtitle}\par}}
-{version_line}
 \vfill
 {{\large {author}\par}}
+{version_line}
 \vspace*{{0.10\textheight}}
 \clearpage
 \endgroup
