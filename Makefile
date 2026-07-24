@@ -43,11 +43,11 @@ clean:
 	$(PYTHON) scripts/build_book.py clean
 
 help:
-	@echo "make build         Build PDF, EPUB and MOBI locally (use WSL on Windows)"
+	@echo "make build         Build all formats; auto-install missing macOS/WSL tools"
 	@echo "make pdf           Build PDF only"
 	@echo "make epub          Build EPUB only"
 	@echo "make mobi          Build MOBI (and the EPUB it is derived from)"
-	@echo "make build-local   Require local Pandoc, XeLaTeX and Calibre"
+	@echo "make build-local   Require existing tools; never install dependencies"
 	@echo "make build-docker  Force the reproducible Docker builder"
 	@echo "make release       Auto-release after >10 commits or >24 hours"
 	@echo "make release VERSION=v0.2.0  Release an explicit semantic version"

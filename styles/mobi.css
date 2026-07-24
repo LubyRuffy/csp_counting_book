@@ -1,0 +1,13 @@
+@charset "UTF-8";
+
+/*
+ * Calibre 会把 EPUB 的主题媒体查询拍扁。MOBI 里让重点文字继承阅读器前景色，
+ * 否则修好夜间主题之后，浅色主题又会被深色专用颜色反杀。
+ */
+.book-emphasis,
+h1,
+h2,
+h3,
+nav#toc a {
+  color: inherit !important;
+}

@@ -1,7 +1,7 @@
 @charset "UTF-8";
 
 :root {
-  color-scheme: light;
+  color-scheme: light dark;
 }
 
 html {
@@ -21,7 +21,7 @@ body {
 h1,
 h2,
 h3 {
-  color: #173f46;
+  color: inherit;
   font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont,
     "PingFang SC", "Microsoft YaHei", "Noto Sans CJK SC",
     "Source Han Sans SC", sans-serif;
@@ -50,7 +50,31 @@ p {
 }
 
 strong {
-  color: #173f46;
+  font-weight: 700;
+}
+
+span.book-emphasis.ibooks-dark-theme-use-custom-text-color {
+  /*
+   * 旧 MOBI 阅读器经常不支持 prefers-color-scheme，还会自行改写固定颜色。
+   * 默认继承阅读器前景色，别拿作者 CSS 跟人家的夜间模式硬刚。
+   */
+  color: inherit;
+}
+
+p > span.book-emphasis.ibooks-dark-theme-use-custom-text-color:only-child {
+  display: block;
+  padding-left: 0.75em;
+  border-left: 0.2em solid #d2a748;
+}
+
+@media (prefers-color-scheme: light) {
+  h1,
+  h2,
+  h3,
+  nav#toc a,
+  span.book-emphasis.ibooks-dark-theme-use-custom-text-color {
+    color: #173f46;
+  }
 }
 
 img {
@@ -93,6 +117,90 @@ pre code {
   background: transparent;
 }
 
+@media (prefers-color-scheme: dark) {
+  body {
+    color: #e6edf3;
+    background: #0d1117;
+  }
+
+  code {
+    background: #21262d;
+  }
+
+  th {
+    color: #e6edf3;
+    background: #1f2933;
+  }
+
+  th,
+  td {
+    border-color: #48515b;
+  }
+
+  blockquote {
+    border-left-color: #79c0ff;
+    background: #161b22;
+  }
+
+  span.book-emphasis.ibooks-dark-theme-use-custom-text-color {
+    color: #8fd3cf;
+  }
+
+  .ibooks-dark-theme-use-custom-text-color div.sourceCode,
+  .ibooks-dark-theme-use-custom-text-color pre {
+    color: #e6edf3;
+    background: #161b22;
+  }
+
+  .ibooks-dark-theme-use-custom-text-color code span.al,
+  .ibooks-dark-theme-use-custom-text-color code span.er {
+    color: #ff7b72;
+  }
+
+  .ibooks-dark-theme-use-custom-text-color code span.an,
+  .ibooks-dark-theme-use-custom-text-color code span.co,
+  .ibooks-dark-theme-use-custom-text-color code span.cv,
+  .ibooks-dark-theme-use-custom-text-color code span.do,
+  .ibooks-dark-theme-use-custom-text-color code span.in,
+  .ibooks-dark-theme-use-custom-text-color code span.wa {
+    color: #8b949e;
+  }
+
+  .ibooks-dark-theme-use-custom-text-color code span.at,
+  .ibooks-dark-theme-use-custom-text-color code span.bn,
+  .ibooks-dark-theme-use-custom-text-color code span.cf,
+  .ibooks-dark-theme-use-custom-text-color code span.dt,
+  .ibooks-dark-theme-use-custom-text-color code span.dv,
+  .ibooks-dark-theme-use-custom-text-color code span.fl,
+  .ibooks-dark-theme-use-custom-text-color code span.fu,
+  .ibooks-dark-theme-use-custom-text-color code span.kw {
+    color: #79c0ff;
+  }
+
+  .ibooks-dark-theme-use-custom-text-color code span.ch,
+  .ibooks-dark-theme-use-custom-text-color code span.sc,
+  .ibooks-dark-theme-use-custom-text-color code span.ss,
+  .ibooks-dark-theme-use-custom-text-color code span.st,
+  .ibooks-dark-theme-use-custom-text-color code span.vs {
+    color: #a5d6ff;
+  }
+
+  .ibooks-dark-theme-use-custom-text-color code span.cn,
+  .ibooks-dark-theme-use-custom-text-color code span.ot,
+  .ibooks-dark-theme-use-custom-text-color code span.pp {
+    color: #d2a8ff;
+  }
+
+  .ibooks-dark-theme-use-custom-text-color code span.im,
+  .ibooks-dark-theme-use-custom-text-color code span.op {
+    color: #ffa657;
+  }
+
+  .ibooks-dark-theme-use-custom-text-color code span.va {
+    color: #e6edf3;
+  }
+}
+
 table {
   width: 100%;
   margin: 1em auto;
@@ -131,6 +239,6 @@ nav#toc ol {
 }
 
 nav#toc a {
-  color: #173f46;
+  color: inherit;
   text-decoration: none;
 }
