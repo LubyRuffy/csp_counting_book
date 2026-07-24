@@ -9,7 +9,9 @@ python3 -m unittest discover -s tests -v
 ```
 
 平台安装测试会 mock Homebrew、`tlmgr`、隔离 Python venv、`pip` 和系统识别，
-不会修改测试机器。测试重点覆盖依赖选择、安装命令、安装后复检和失败提示。
+不会修改测试机器。Release 测试也会 mock GitHub CLI、构建和上传，验证未传
+`VERSION` 时立即递增最新补丁版本并进入发布流程。测试重点覆盖依赖选择、
+安装命令、安装后复检、版本决策和失败提示。
 
 ## 静态检查
 

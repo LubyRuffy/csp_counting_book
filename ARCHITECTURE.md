@@ -24,7 +24,8 @@ book.toml + 章节 Markdown + imgs/
   自定义配色能力；`styles/mobi.css` 在 Calibre 转换末尾让 MOBI 重点文字退回
   阅读器前景色，同时保留结构化侧边标记；标题和目录颜色也由阅读主题控制。
 - `scripts/pandoc-data/`：项目自带的 Pandoc 中文界面术语。
-- `scripts/release.py`：版本判断、构建验证和 GitHub Release 发布。
+- `scripts/release.py`：未指定版本时递增最新稳定版的补丁号，随后执行构建
+  验证和 GitHub Release 发布。
 
 ## 请求与数据流
 

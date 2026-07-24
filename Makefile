@@ -49,7 +49,7 @@ help:
 	@echo "make mobi          Build MOBI (and the EPUB it is derived from)"
 	@echo "make build-local   Require existing tools; never install dependencies"
 	@echo "make build-docker  Force the reproducible Docker builder"
-	@echo "make release       Auto-release after >10 commits or >24 hours"
+	@echo "make release       Increment the latest patch version and publish"
 	@echo "make release VERSION=v0.2.0  Release an explicit semantic version"
 	@echo "make verify        Validate existing files in dist/"
 	@echo "make doctor        Show source and dependency diagnostics"

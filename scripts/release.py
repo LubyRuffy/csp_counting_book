@@ -10,7 +10,7 @@ import re
 import shutil
 import subprocess
 import sys
-from datetime import datetime, timezone
+from datetime import datetime
 from pathlib import Path
 from typing import Sequence
 
@@ -19,8 +19,6 @@ import build_book
 
 ROOT = Path(__file__).resolve().parent.parent
 SEMVER = re.compile(r"^v(\d+)\.(\d+)\.(\d+)$")
-COMMIT_THRESHOLD = 10
-HOUR_THRESHOLD = 24
 
 
 class ReleaseError(RuntimeError):
@@ -110,10 +108,6 @@ def next_patch(version: str) -> str:
     return f"v{major}.{minor}.{patch + 1}"
 
 
-def parse_timestamp(value: str) -> datetime:
-    return datetime.fromisoformat(value.replace("Z", "+00:00")).astimezone(timezone.utc)
-
-
 def require_clean_worktree() -> None:
     result = run(["git", "status", "--porcelain"], capture=True)
     if result.stdout.strip():
@@ -147,7 +141,7 @@ def latest_release(gh: str) -> dict | None:
             "1",
             "--exclude-drafts",
             "--json",
-            "tagName,publishedAt",
+            "tagName",
         ],
         capture=True,
     )
@@ -155,18 +149,10 @@ def latest_release(gh: str) -> dict | None:
     return releases[0] if releases else None
 
 
-def commit_count_since(tag: str | None) -> int:
-    revision = "HEAD" if tag is None else f"{tag}..HEAD"
-    result = run(["git", "rev-list", "--count", revision], capture=True)
-    return int(result.stdout.strip())
-
-
 def choose_version(
     requested: str | None,
     latest: dict | None,
-    *,
-    now: datetime | None = None,
-) -> tuple[str | None, str]:
+) -> tuple[str, str]:
     if requested:
         parse_version(requested)
         return requested, "explicit VERSION"
@@ -176,13 +162,7 @@ def choose_version(
 
     tag = latest["tagName"]
     parse_version(tag)
-    commits = commit_count_since(tag)
-    published = parse_timestamp(latest["publishedAt"])
-    elapsed_hours = ((now or datetime.now(timezone.utc)) - published).total_seconds() / 3600
-    reason = f"{commits} commits since {tag}, {elapsed_hours:.1f} hours elapsed"
-    if commits > COMMIT_THRESHOLD or elapsed_hours > HOUR_THRESHOLD:
-        return next_patch(tag), reason
-    return None, reason
+    return next_patch(tag), f"automatic patch increment from {tag}"
 
 
 def ensure_version_available(gh: str, version: str) -> None:
@@ -271,9 +251,6 @@ def main() -> int:
     require_pushed_head()
     latest = latest_release(gh)
     version, reason = choose_version(args.version, latest)
-    if version is None:
-        log(f"release skipped: {reason}; thresholds are >10 commits or >24 hours")
-        return 0
 
     log(f"preparing {version}: {reason}")
     ensure_version_available(gh, version)
